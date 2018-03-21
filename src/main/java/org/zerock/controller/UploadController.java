@@ -24,7 +24,10 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value = "/uploadForm", method = RequestMethod.POST)
-	public void uploadForm(MultipartFile file, Model model) throws Exception{
+	public void uploadForm(MultipartFile file, Model model) throws Exception {
 		
+		logger.info("originalName : " + file.getOriginalFilename());
+		logger.info("size: " + file.getSize());
+		logger.info("contentType: " + file.getContentType());
 	}
 }
