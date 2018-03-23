@@ -34,7 +34,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value = "/uploadForm", method = RequestMethod.POST)
-	public void uploadForm(MultipartFile file, Model model) throws Exception {
+	public String uploadForm(MultipartFile file, Model model) throws Exception {
 		
 		logger.info("originalName : " + file.getOriginalFilename());
 		logger.info("size: " + file.getSize());
@@ -43,6 +43,8 @@ public class UploadController {
 		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes());
 		
 		model.addAttribute("savedName", savedName);
+		
+		return "uploadResult";
 	}
 	
 	private String uploadFile(String originalName, byte[] fileData) throws Exception {
@@ -56,6 +58,12 @@ public class UploadController {
 		FileCopyUtils.copy(fileData, target);
 		
 		return savedName;
+		
+	}
+	
+	/* Ajax 방식의 파일 업로드 */
+	@RequestMapping(value = "/uploadAjax", method = RequestMethod.GET)
+	public void uploadAjax(){
 		
 	}
 }

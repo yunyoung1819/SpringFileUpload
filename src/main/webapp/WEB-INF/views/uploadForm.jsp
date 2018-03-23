@@ -6,10 +6,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+
+<style>
+iframe {
+	width: 1500px;
+	height: 1500px;
+	border: 10px;
+}
+</style>
 <body>
 
-<form id="form1" action="uploadForm" method="post" enctype="multipart/form-data">
+<form id="form1" action="uploadForm" method="post" enctype="multipart/form-data" target="zeroFrame">
 	<input type='file' name='file'><input type='submit'>
 </form>
+
+<iframe name="zeroFrame"></iframe>
+
+<script>
+function addFilePath(msg){
+	alert(msg);
+	document.getElementById("form1").reset();
+}
+</script>
+
 </body>
 </html>
