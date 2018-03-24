@@ -45,6 +45,7 @@ small {
 			
 			formData.append("file", file);
 			console.log("formData:", formData);
+			
 			// Ajax를 이용한 파일 데이터의 전송
 			$.ajax({
 				url: '/uploadAjax',
