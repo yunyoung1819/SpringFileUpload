@@ -36,9 +36,27 @@ small {
 		$(".fileDrop").on("drop", function(event){
 			event.preventDefault();
 			
-			var files = event.originalEvent.dataTransfer.files;
+			var files = event.originalEvent.dataTransfer.files; // 전달된 파일 데이터를 가져오는 부분
 			var file = files[0];
 			console.log(file);
+			
+			// FormData를 이용한 서버 호출
+			var formData = new FormData();
+			
+			formData.append("file", file);
+			console.log("formData:", formData);
+			// Ajax를 이용한 파일 데이터의 전송
+			$.ajax({
+				url: '/uploadAjax',
+				data: formData,
+				dataType: 'text',
+				processData: false,
+				contentType: false,
+				type: 'POST',
+				success: function(data){
+					alert(data);
+				}
+			});
 			
 		});
 	</script>
