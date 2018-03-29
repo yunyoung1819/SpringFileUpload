@@ -55,11 +55,51 @@ small {
 				contentType: false,
 				type: 'POST',
 				success: function(data){
-					alert(data);
+					
+					var str = "";
+					
+					if(checkImageType(data)){
+						str ="<div>"
+							  +"<img src='displayFile?fileName="+data+"'/>"
+							  + data + "</div>";
+					}else{
+						str = "<div><a href='displayFile?fileName="+data+"'>"
+							  + getOriginalName(data)+ 
+							  +"</a>"+"</div>";
+					}
+					
+					$(".uploadedList").append(str);
 				}
 			});
 			
 		});
+		
+		// JSP에서 파일 출력하기 
+		// 전송받은 문자열이 이미지 파일인지를 확인하는 함수 
+		function checkImageType(fileName){
+			
+			var pattern = /jpg|gif|png|jpeg/i;
+			
+			return fileName.match(pattern);
+		}
+		
+		// 일반 파일의 이름을 줄여주는 기능 
+		function getOriginalName(fileName){
+			
+			if(checkImageType(fileName)){
+				return;
+			}
+			
+			var idx = fileName.indexOf("_") + 1;
+			var idx2 = fileName.indexOf("_") - 1;
+			
+			console.log("fileName : ", fileName);
+			console.log("idx : ", idx);
+			console.log("idx2 : ", idx2);
+			
+			return fileName.substr(idx);
+		}
+		
 	</script>
 </body>
 </html>
