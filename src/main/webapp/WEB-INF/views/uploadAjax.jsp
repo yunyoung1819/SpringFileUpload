@@ -58,20 +58,48 @@ small {
 					
 					var str = "";
 					
+					console.log("---------------");
+					console.log(data);
+					console.log(checkImageType(data));
+					console.log("---------------");
+					
 					if(checkImageType(data)){
 						str ="<div>"
+							  +"<a href=displayFile?fileName="+getImageLink(data)+">"
 							  +"<img src='displayFile?fileName="+data+"'/>"
-							  + data + "</div>";
+							  +"</a><small data-src="+data+">X</small></div>";
 					}else{
 						str = "<div><a href='displayFile?fileName="+data+"'>"
 							  + getOriginalName(data)+ 
-							  +"</a>"+"</div>";
+							  +"</a>"
+							  +"<small data-src="+data+">X</small></div>";
 					}
 					
 					$(".uploadedList").append(str);
 				}
 			});
 			
+		});
+		
+		// JSP에서 첨부 파일 삭제 처리
+		$(".uploadedList").on("click", "small", function(event){
+			
+			var that = $(this);
+			
+			$.ajax({
+				url: "deleteFile",
+				type: "post",
+				data: {fileName:$(this).attr("data-src")},
+				dataType: "text",
+				success: function(result){
+					if(result == 'deleted'){
+						alert("deleted");
+						// 화면에서 첨부파일을 보여주기 위해서 만들어진 <div> 삭제
+						// jQuery의 remove()를 이용
+						that.parent("div").remove();
+					}
+				}
+			});
 		});
 		
 		// JSP에서 파일 출력하기 
@@ -83,7 +111,7 @@ small {
 			return fileName.match(pattern);
 		}
 		
-		// 일반 파일의 이름을 줄여주는 기능 
+		// 파일 링크 처리(일반 파일인 경우 이름을 줄여주기) 
 		function getOriginalName(fileName){
 			
 			if(checkImageType(fileName)){
@@ -91,13 +119,20 @@ small {
 			}
 			
 			var idx = fileName.indexOf("_") + 1;
-			var idx2 = fileName.indexOf("_") - 1;
-			
-			console.log("fileName : ", fileName);
-			console.log("idx : ", idx);
-			console.log("idx2 : ", idx2);
 			
 			return fileName.substr(idx);
+		}
+		
+		// 파일 링크 처리(이미지 파일인 경우 원본 파일 찾기)
+		function getImageLink(fileName){
+			
+			if(!checkImageType(fileName)){
+				return;
+			}
+			var front = fileName.substr(0, 12); // 년/월/일
+			var end = fileName.substr(14);
+			
+			return front + end;
 		}
 		
 	</script>
